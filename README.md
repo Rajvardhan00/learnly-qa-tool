@@ -1,4 +1,3 @@
-Here's the full README — copy everything below:
 
 markdown<div align="center">
 
