@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Learnly QA Tool</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0c0f1a;
+    --bg2: #111827;
+    --bg3: #1a2236;
+    --card: #141d2e;
+    --card2: #1e2d47;
+    --border: #243352;
+    --accent: #3b82f6;
+    --accent2: #60a5fa;
+    --accent3: #93c5fd;
+    --green: #10b981;
+    --amber: #f59e0b;
+    --red: #ef4444;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --glow: rgba(59,130,246,0.15);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── Layout ─── */
+  #app { position: relative; z-index: 1; }
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: flex; flex-direction: column; }
+
+  /* ─── Auth Page ─── */
+  #auth-page {
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: radial-gradient(ellipse at 50% 0%, rgba(59,130,246,0.1) 0%, transparent 60%), var(--bg);
+  }
+  .auth-logo {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+  .auth-logo .wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #60a5fa, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .auth-logo .tagline {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--text3);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+  .auth-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.03);
+  }
+  .auth-tabs {
+    display: flex;
+    background: var(--bg2);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 2rem;
+  }
+  .auth-tab {
+    flex: 1;
+    padding: 0.6rem;
+    border: none;
+    background: none;
+    color: var(--text2);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .auth-tab.active {
+    background: var(--accent);
+    color: white;
+    box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+  }
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text2);
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+  input[type="text"], input[type="email"], input[type="password"] {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    margin-bottom: 1.2rem;
+  }
+  input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+    width: 100%;
+    padding: 0.85rem;
+    box-shadow: 0 4px 12px rgba(59,130,246,0.3);
+  }
+  .btn-primary:hover { background: #2563eb; box-shadow: 0 4px 20px rgba(59,130,246,0.5); transform: translateY(-1px); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-sm {
+    padding: 0.45rem 0.9rem;
+    font-size: 0.8rem;
+    border-radius: 7px;
+  }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text2);
+  }
+  .btn-ghost:hover { background: var(--bg2); color: var(--text); }
+  .btn-danger { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+  .btn-danger:hover { background: rgba(239,68,68,0.25); }
+  .btn-success { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+  .btn-success:hover { background: rgba(16,185,129,0.25); }
+  .err-msg { color: var(--red); font-size: 0.82rem; margin-top: -0.8rem; margin-bottom: 0.8rem; }
+
+  /* ─── Main App Layout ─── */
+  #main-page { flex-direction: row; }
+  .sidebar {
+    width: 260px;
+    min-height: 100vh;
+    background: var(--card);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 0;
+    flex-shrink: 0;
+  }
+  .sidebar-logo {
+    padding: 0 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+  }
+  .sidebar-logo .wordmark {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, #60a5fa, #818cf8);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sidebar-logo .sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .nav-section {
+    padding: 0 1rem;
+    margin-bottom: 0.5rem;
+  }
+  .nav-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.62rem;
+    color: var(--text3);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 9px;
+    cursor: pointer;
+    color: var(--text2);
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.15s;
+    margin-bottom: 2px;
+  }
+  .nav-item:hover { background: var(--bg2); color: var(--text); }
+  .nav-item.active { background: var(--glow); color: var(--accent2); border: 1px solid rgba(59,130,246,0.2); }
+  .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+  .sidebar-footer {
+    margin-top: auto;
+    padding: 1rem 1.5rem 0;
+    border-top: 1px solid var(--border);
+  }
+  .user-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem;
+    background: var(--bg2);
+    border-radius: 10px;
+  }
+  .avatar {
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #818cf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: white;
+    flex-shrink: 0;
+  }
+  .user-info { flex: 1; overflow: hidden; }
+  .user-email { font-size: 0.78rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .logout-btn { background: none; border: none; color: var(--text3); cursor: pointer; padding: 4px; border-radius: 5px; transition: color 0.15s; }
+  .logout-btn:hover { color: var(--red); }
+
+  /* ─── Main Content ─── */
+  .main-content {
+    flex: 1;
+    padding: 2.5rem;
+    overflow-y: auto;
+    max-height: 100vh;
+  }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .panel-header {
+    margin-bottom: 2rem;
+  }
+  .panel-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .panel-sub { color: var(--text2); font-size: 0.9rem; }
+
+  /* ─── Cards ─── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background: var(--bg2);
+    color: var(--text3);
+    margin-left: auto;
+  }
+
+  /* ─── Upload Zone ─── */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--accent);
+    background: var(--glow);
+  }
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .upload-icon { font-size: 2rem; margin-bottom: 0.5rem; }
+  .upload-text { color: var(--text2); font-size: 0.88rem; }
+  .upload-hint { color: var(--text3); font-size: 0.78rem; margin-top: 0.3rem; font-family: 'DM Mono', monospace; }
+
+  /* ─── Doc List ─── */
+  .doc-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 0.5rem;
+  }
+  .doc-icon { font-size: 1.2rem; flex-shrink: 0; }
+  .doc-name { flex: 1; font-size: 0.88rem; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .doc-meta { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--text3); }
+
+  /* ─── Coverage Summary ─── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .summary-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    text-align: center;
+  }
+  .summary-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+  .summary-label { font-size: 0.78rem; color: var(--text2); }
+  .summary-card.total .summary-num { color: var(--accent2); }
+  .summary-card.answered .summary-num { color: var(--green); }
+  .summary-card.missing .summary-num { color: var(--red); }
+
+  /* ─── QA Items ─── */
+  .qa-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s;
+  }
+  .qa-item:hover { border-color: rgba(59,130,246,0.3); }
+  .qa-item.not-found { border-color: rgba(239,68,68,0.2); }
+  .qa-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .qa-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.72rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    color: var(--text3);
+    padding: 3px 8px;
+    border-radius: 5px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .qa-question { font-weight: 600; font-size: 0.95rem; flex: 1; line-height: 1.5; }
+  .confidence-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    padding: 3px 8px;
+    border-radius: 6px;
+    flex-shrink: 0;
+    font-weight: 500;
+  }
+  .conf-high { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+  .conf-mid { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.25); }
+  .conf-low { background: rgba(239,68,68,0.15); color: var(--red); border: 1px solid rgba(239,68,68,0.25); }
+
+  .qa-answer-area { margin-bottom: 0.75rem; }
+  .qa-answer-text {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    background: var(--bg2);
+    border-radius: 9px;
+    border: 1px solid var(--border);
+  }
+  .qa-answer-text.not-found-text { color: var(--red); font-style: italic; }
+  .qa-answer-edit {
+    width: 100%;
+    background: var(--bg2);
+    border: 1px solid var(--accent);
+    border-radius: 9px;
+    padding: 0.75rem 1rem;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.65;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    box-shadow: 0 0 0 3px var(--glow);
+  }
+
+  .evidence-block {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text2);
+    font-style: italic;
+    padding: 0.6rem 1rem;
+    border-left: 2px solid var(--accent);
+    background: rgba(59,130,246,0.05);
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .citations-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .citations-label {
+    font-size: 0.75rem;
+    color: var(--text3);
+    font-weight: 500;
+  }
+  .citation-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    padding: 2px 8px;
+    background: rgba(59,130,246,0.1);
+    color: var(--accent3);
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 5px;
+  }
+
+  .qa-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .edited-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--amber);
+    padding: 2px 7px;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.2);
+    border-radius: 5px;
+  }
+  .select-checkbox {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+    margin-right: 0.25rem;
+  }
+
+  /* ─── Runs List ─── */
+  .run-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .run-item:hover { border-color: var(--accent); background: var(--card2); }
+  .run-info { flex: 1; }
+  .run-name { font-weight: 600; font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .run-meta { font-family: 'DM Mono', monospace; font-size: 0.7rem; color: var(--text3); }
+  .status-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .status-done { background: var(--green); box-shadow: 0 0 6px var(--green); }
+  .status-pending { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .status-processing { background: var(--accent); box-shadow: 0 0 6px var(--accent); animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+  /* ─── Toast ─── */
+  #toast {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    padding: 0.8rem 1.25rem;
+    border-radius: 10px;
+    font-size: 0.88rem;
+    font-weight: 500;
+    z-index: 1000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s;
+    max-width: 360px;
+  }
+  #toast.show { transform: translateY(0); opacity: 1; }
+  #toast.success { background: rgba(16,185,129,0.9); color: white; }
+  #toast.error { background: rgba(239,68,68,0.9); color: white; }
+  #toast.info { background: rgba(59,130,246,0.9); color: white; }
+
+  /* ─── Loader ─── */
+  .spinner {
+    width: 16px; height: 16px;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: inline-block;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text3);
+  }
+  .empty-state .emoji { font-size: 2.5rem; margin-bottom: 0.75rem; }
+  .empty-state p { font-size: 0.9rem; }
+  .divider { height: 1px; background: var(--border); margin: 1.5rem 0; }
+  .flex-row { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+  .ml-auto { margin-left: auto; }
+
+  /* ─── Regenerate bar ─── */
+  #regen-bar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--card2);
+    border: 1px solid rgba(59,130,246,0.3);
+    border-radius: 12px;
+    padding: 0.75rem 1.25rem;
+    margin-bottom: 1rem;
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    backdrop-filter: blur(10px);
+  }
+  #regen-bar.show { display: flex; }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .main-content { padding: 1.5rem; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ─── Auth Page ─── -->
+<div id="auth-page" class="page active">
+  <div class="auth-logo">
+    <div class="wordmark">Learnly</div>
+    <div class="tagline">Questionnaire Answering Tool</div>
+  </div>
+  <div class="auth-card">
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchTab('login')">Sign In</button>
+      <button class="auth-tab" onclick="switchTab('register')">Create Account</button>
+    </div>
+    <!-- Login -->
+    <div id="login-form">
+      <label>Email address</label>
+      <input type="email" id="login-email" placeholder="you@university.edu" />
+      <label>Password</label>
+      <input type="password" id="login-password" placeholder="••••••••" />
+      <div id="login-err" class="err-msg" style="display:none"></div>
+      <button class="btn btn-primary" onclick="doLogin()" id="login-btn">Sign In</button>
+      <p style="text-align:center;margin-top:1rem;font-size:0.8rem;color:var(--text3)">
+        Demo: <span style="font-family:'DM Mono',monospace">demo@learnly.io</span> / <span style="font-family:'DM Mono',monospace">demo1234</span>
+      </p>
+    </div>
+    <!-- Register -->
+    <div id="register-form" style="display:none">
+      <label>Full name</label>
+      <input type="text" id="reg-name" placeholder="Alex Johnson" />
+      <label>Email address</label>
+      <input type="email" id="reg-email" placeholder="you@university.edu" />
+      <label>Password</label>
+      <input type="password" id="reg-password" placeholder="Min. 8 characters" />
+      <div id="reg-err" class="err-msg" style="display:none"></div>
+      <button class="btn btn-primary" onclick="doRegister()" id="reg-btn">Create Account</button>
+    </div>
+  </div>
+</div>
+
+<!-- ─── Main App ─── -->
+<div id="main-page" class="page">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="wordmark">Learnly</div>
+      <div class="sub">QA Tool</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label">Workspace</div>
+      <div class="nav-item active" onclick="showPanel('dashboard')" id="nav-dashboard">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7h7v7H3V7zm0 9h7v2H3v-2zm11-9h7v2h-7V7zm0 5h7v7h-7v-7z"/></svg>
+        Dashboard
+      </div>
+      <div class="nav-item" onclick="showPanel('docs')" id="nav-docs">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        Reference Docs
+      </div>
+      <div class="nav-item" onclick="showPanel('runs')" id="nav-runs">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Questionnaire Runs
+      </div>
+      <div class="nav-item" onclick="showPanel('new-run')" id="nav-new-run">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        New Run
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-pill">
+        <div class="avatar" id="user-avatar">?</div>
+        <div class="user-info">
+          <div class="user-email" id="user-email-label">loading...</div>
+        </div>
+        <button class="logout-btn" onclick="doLogout()" title="Sign out">
+          <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content">
+
+    <!-- Dashboard -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="panel-header">
+        <div class="panel-title">Dashboard</div>
+        <div class="panel-sub">Welcome back. Here's an overview of your workspace.</div>
+      </div>
+      <div class="summary-grid">
+        <div class="summary-card total"><div class="summary-num" id="dash-total-runs">0</div><div class="summary-label">Total Runs</div></div>
+        <div class="summary-card answered"><div class="summary-num" id="dash-ref-docs">0</div><div class="summary-label">Reference Docs</div></div>
+        <div class="summary-card missing"><div class="summary-num" id="dash-not-found">0</div><div class="summary-label">Unanswered (latest)</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Recent Runs <span class="section-badge">latest 5</span></div>
+        <div id="dash-runs-list"><div class="empty-state"><div class="emoji">📋</div><p>No runs yet. Start by uploading a questionnaire.</p></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Quick Start</div>
+        <div style="font-size:0.88rem;color:var(--text2);line-height:1.8">
+          <b style="color:var(--text)">Step 1:</b> Upload reference documents (security policy, SLA, privacy docs, etc.)<br>
+          <b style="color:var(--text)">Step 2:</b> Upload your questionnaire (PDF, DOCX, or TXT)<br>
+          <b style="color:var(--text)">Step 3:</b> Click "Generate Answers" and review the AI-generated responses<br>
+          <b style="color:var(--text)">Step 4:</b> Edit any answers, then export as a complete DOCX
+        </div>
+      </div>
+    </div>
+
+    <!-- Reference Docs Panel -->
+    <div class="panel" id="panel-docs">
+      <div class="panel-header">
+        <div class="panel-title">Reference Documents</div>
+        <div class="panel-sub">These documents are used as the source of truth for answering questionnaires.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Upload Document</div>
+        <div class="upload-zone" id="ref-upload-zone">
+          <input type="file" id="ref-file-input" accept=".pdf,.docx,.txt" onchange="uploadRefDoc(this.files[0])" />
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">Drop a file here or click to browse</div>
+          <div class="upload-hint">PDF · DOCX · TXT</div>
+        </div>
+        <div id="ref-upload-status" style="margin-top:0.75rem;font-size:0.83rem;color:var(--text2);display:none"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Uploaded Documents <span class="section-badge" id="ref-doc-count">0 docs</span></div>
+        <div id="ref-docs-list"><div class="empty-state"><div class="emoji">📁</div><p>No reference documents yet.</p></div></div>
+      </div>
+    </div>
+
+    <!-- Runs Panel -->
+    <div class="panel" id="panel-runs">
+      <div class="panel-header">
+        <div class="panel-title">Questionnaire Runs</div>
+        <div class="panel-sub">All your previous runs. Click any run to review answers.</div>
+      </div>
+      <div id="runs-list"><div class="empty-state"><div class="emoji">🗂️</div><p>No runs yet.</p></div></div>
+    </div>
+
+    <!-- New Run Panel -->
+    <div class="panel" id="panel-new-run">
+      <div class="panel-header">
+        <div class="panel-title">New Questionnaire Run</div>
+        <div class="panel-sub">Upload a questionnaire to auto-generate answers from your reference docs.</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Upload Questionnaire</div>
+        <div class="upload-zone" id="q-upload-zone">
+          <input type="file" id="q-file-input" accept=".pdf,.docx,.txt" onchange="uploadQuestionnaire(this.files[0])" />
+          <div class="upload-icon">📋</div>
+          <div class="upload-text">Drop your questionnaire here or click to browse</div>
+          <div class="upload-hint">PDF · DOCX · TXT — numbered or structured questions</div>
+        </div>
+      </div>
+      <div id="q-preview-card" style="display:none">
+        <div class="card">
+          <div class="card-title" id="q-preview-title">Questions Found</div>
+          <div id="q-preview-list"></div>
+          <div class="divider"></div>
+          <button class="btn btn-primary" onclick="generateAnswers()" id="gen-btn">
+            ✨ Generate Answers
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Run Detail Panel -->
+    <div class="panel" id="panel-run-detail">
+      <div class="panel-header flex-row">
+        <div>
+          <div class="panel-title" id="detail-title">Run Details</div>
+          <div class="panel-sub" id="detail-sub"></div>
+        </div>
+        <div class="ml-auto flex-row">
+          <button class="btn btn-ghost btn-sm" onclick="showPanel('runs')">← Back</button>
+          <button class="btn btn-success btn-sm" onclick="exportRun()" id="export-btn">⬇ Export DOCX</button>
+        </div>
+      </div>
+      <!-- Coverage Summary -->
+      <div class="summary-grid" id="detail-summary-grid">
+        <div class="summary-card total"><div class="summary-num" id="detail-total">0</div><div class="summary-label">Total Questions</div></div>
+        <div class="summary-card answered"><div class="summary-num" id="detail-answered">0</div><div class="summary-label">Answered</div></div>
+        <div class="summary-card missing"><div class="summary-num" id="detail-missing">0</div><div class="summary-label">Not Found</div></div>
+      </div>
+      <!-- Regenerate bar -->
+      <div id="regen-bar">
+        <span id="regen-count" style="font-size:0.85rem;font-weight:600"></span>
+        <span style="font-size:0.82rem;color:var(--text2)">questions selected</span>
+        <button class="btn btn-sm" style="background:var(--accent);color:white;" onclick="regenSelected()">🔄 Regenerate Selected</button>
+        <button class="btn btn-ghost btn-sm ml-auto" onclick="clearSelection()">Clear</button>
+      </div>
+      <div id="qa-list"></div>
+    </div>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+const API = '';  // relative path; change to full URL if needed
+let token = localStorage.getItem('token') || '';
+let currentRunId = null;
+let selectedItems = new Set();
+
+// ─── Utilities ───
+function api(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(opts.headers || {}) };
+  if (token) headers['Authorization'] = `Bearer ${token}`;
+  if (opts.body instanceof FormData) delete headers['Content-Type'];
+  return fetch(API + path, { ...opts, headers }).then(async r => {
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(data.detail || 'Request failed');
+    return data;
+  });
+}
+
+function toast(msg, type = 'info') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className = `show ${type}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className = '', 3000);
+}
+
+function setBtn(id, text, disabled = false) {
+  const b = document.getElementById(id);
+  if (b) { b.innerHTML = text; b.disabled = disabled; }
+}
+
+// ─── Auth ───
+function switchTab(tab) {
+  document.querySelectorAll('.auth-tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (tab === 'login')));
+  document.getElementById('login-form').style.display = tab === 'login' ? '' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? '' : 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-err');
+  errEl.style.display = 'none';
+  setBtn('login-btn', '<span class="spinner"></span> Signing in…', true);
+  try {
+    const data = await api('/auth/login', { method: 'POST', body: JSON.stringify({ email, password: pass }) });
+    token = data.access_token;
+    localStorage.setItem('token', token);
+    enterApp(data.user);
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = '';
+    setBtn('login-btn', 'Sign In', false);
+  }
+}
+
+async function doRegister() {
+  const name = document.getElementById('reg-name').value.trim();
+  const email = document.getElementById('reg-email').value.trim();
+  const pass = document.getElementById('reg-password').value;
+  const errEl = document.getElementById('reg-err');
+  errEl.style.display = 'none';
+  setBtn('reg-btn', '<span class="spinner"></span> Creating…', true);
+  try {
+    const data = await api('/auth/register', { method: 'POST', body: JSON.stringify({ email, password: pass, full_name: name }) });
+    token = data.access_token;
+    localStorage.setItem('token', token);
+    enterApp(data.user);
+  } catch(e) {
+    errEl.textContent = e.message;
+    errEl.style.display = '';
+    setBtn('reg-btn', 'Create Account', false);
+  }
+}
+
+function doLogout() {
+  token = ''; localStorage.removeItem('token');
+  document.getElementById('auth-page').classList.add('active');
+  document.getElementById('main-page').classList.remove('active');
+}
+
+function enterApp(user) {
+  document.getElementById('auth-page').classList.remove('active');
+  document.getElementById('main-page').classList.add('active');
+  const email = user?.email || '';
+  document.getElementById('user-email-label').textContent = email;
+  document.getElementById('user-avatar').textContent = email[0]?.toUpperCase() || '?';
+  loadDashboard();
+  loadRefDocs();
+  loadRuns();
+}
+
+// ─── On load: check token ───
+window.addEventListener('load', async () => {
+  if (token) {
+    try {
+      const user = await api('/auth/me');
+      enterApp(user);
+    } catch(e) { token = ''; localStorage.removeItem('token'); }
+  }
+});
+
+// ─── Navigation ───
+function showPanel(name) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('panel-' + name).classList.add('active');
+  const nav = document.getElementById('nav-' + name);
+  if (nav) nav.classList.add('active');
+}
+
+// ─── Dashboard ───
+async function loadDashboard() {
+  try {
+    const [runs, docs] = await Promise.all([api('/runs'), api('/reference-docs')]);
+    document.getElementById('dash-total-runs').textContent = runs.length;
+    document.getElementById('dash-ref-docs').textContent = docs.length;
+    const latest = runs[0];
+    document.getElementById('dash-not-found').textContent = latest ? latest.not_found_count : 0;
+    const el = document.getElementById('dash-runs-list');
+    if (!runs.length) { el.innerHTML = `<div class="empty-state"><div class="emoji">📋</div><p>No runs yet.</p></div>`; return; }
+    el.innerHTML = runs.slice(0, 5).map(r => runItemHTML(r)).join('');
+  } catch(e) {}
+}
+
+function runItemHTML(r) {
+  const statusClass = r.status === 'done' ? 'status-done' : r.status === 'processing' ? 'status-processing' : 'status-pending';
+  const date = new Date(r.created_at).toLocaleDateString();
+  return `<div class="run-item" onclick="openRun(${r.id})">
+    <div class="status-dot ${statusClass}"></div>
+    <div class="run-info">
+      <div class="run-name">${r.filename}</div>
+      <div class="run-meta">${date} · ${r.total_questions} questions · ${r.answered_count} answered · ${r.not_found_count} not found</div>
+    </div>
+    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+  </div>`;
+}
+
+// ─── Reference Docs ───
+async function loadRefDocs() {
+  try {
+    const docs = await api('/reference-docs');
+    const el = document.getElementById('ref-docs-list');
+    document.getElementById('ref-doc-count').textContent = `${docs.length} doc${docs.length !== 1 ? 's' : ''}`;
+    if (!docs.length) { el.innerHTML = `<div class="empty-state"><div class="emoji">📁</div><p>No reference documents yet.</p></div>`; return; }
+    el.innerHTML = docs.map(d => `
+      <div class="doc-item">
+        <div class="doc-icon">📄</div>
+        <div>
+          <div class="doc-name">${d.filename}</div>
+          <div class="doc-meta">${new Date(d.created_at).toLocaleDateString()}</div>
+        </div>
+        <button class="btn btn-danger btn-sm ml-auto" onclick="deleteDoc(${d.id}, event)">Remove</button>
+      </div>`).join('');
+  } catch(e) {}
+}
+
+async function uploadRefDoc(file) {
+  if (!file) return;
+  const statusEl = document.getElementById('ref-upload-status');
+  statusEl.style.display = '';
+  statusEl.textContent = `⏳ Uploading ${file.name}…`;
+  const fd = new FormData();
+  fd.append('file', file);
+  try {
+    const res = await api('/reference-docs/upload', { method: 'POST', body: fd, headers: {} });
+    statusEl.textContent = `✅ Uploaded "${res.filename}" (${res.chunks} chunks indexed)`;
+    toast(`Reference doc uploaded: ${res.filename}`, 'success');
+    loadRefDocs(); loadDashboard();
+    document.getElementById('ref-file-input').value = '';
+  } catch(e) {
+    statusEl.textContent = `❌ Error: ${e.message}`;
+    toast(e.message, 'error');
+  }
+}
+
+async function deleteDoc(id, e) {
+  e.stopPropagation();
+  try {
+    await api(`/reference-docs/${id}`, { method: 'DELETE' });
+    toast('Document removed', 'info');
+    loadRefDocs(); loadDashboard();
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+// ─── Runs ───
+async function loadRuns() {
+  try {
+    const runs = await api('/runs');
+    const el = document.getElementById('runs-list');
+    if (!runs.length) { el.innerHTML = `<div class="empty-state"><div class="emoji">🗂️</div><p>No runs yet. Start a new run!</p></div>`; return; }
+    el.innerHTML = runs.map(r => runItemHTML(r)).join('');
+  } catch(e) {}
+}
+
+async function openRun(id) {
+  currentRunId = id;
+  selectedItems = new Set();
+  showPanel('run-detail');
+  document.getElementById('qa-list').innerHTML = `<div class="empty-state"><span class="spinner"></span> Loading…</div>`;
+  try {
+    const run = await api(`/runs/${id}`);
+    document.getElementById('detail-title').textContent = run.filename;
+    document.getElementById('detail-sub').textContent = `${run.total_questions} questions · ${new Date(run.created_at).toLocaleDateString()}`;
+    document.getElementById('detail-total').textContent = run.total_questions;
+    document.getElementById('detail-answered').textContent = run.answered_count;
+    document.getElementById('detail-missing').textContent = run.not_found_count;
+    renderQAItems(run.qa_items);
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function renderQAItems(items) {
+  const el = document.getElementById('qa-list');
+  if (!items.length) { el.innerHTML = `<div class="empty-state"><p>No items.</p></div>`; return; }
+  el.innerHTML = items.map(item => qaItemHTML(item)).join('');
+}
+
+function qaItemHTML(item) {
+  const citations = Array.isArray(item.citations) ? item.citations : [];
+  const conf = item.confidence_score || 0;
+  const confLabel = conf >= 0.8 ? 'High' : conf >= 0.5 ? 'Mid' : 'Low';
+  const confClass = conf >= 0.8 ? 'conf-high' : conf >= 0.5 ? 'conf-mid' : 'conf-low';
+  const isNotFound = item.not_found || (item.answer || '').toLowerCase().includes('not found');
+
+  return `<div class="qa-item ${isNotFound ? 'not-found' : ''}" id="qa-item-${item.id}">
+    <div class="qa-header">
+      <input type="checkbox" class="select-checkbox" onchange="toggleSelect(${item.id}, this.checked)" />
+      <span class="qa-num">Q${item.question_number}</span>
+      <div class="qa-question">${escHtml(item.question_text)}</div>
+      ${!isNotFound ? `<span class="confidence-badge ${confClass}">${confLabel} ${Math.round(conf*100)}%</span>` : ''}
+    </div>
+    <div class="qa-answer-area" id="answer-area-${item.id}">
+      <div class="qa-answer-text ${isNotFound ? 'not-found-text' : ''}" id="answer-text-${item.id}">${escHtml(item.answer || 'Not answered yet')}</div>
+    </div>
+    ${item.evidence_snippet && !isNotFound ? `<div class="evidence-block">💡 "${escHtml(item.evidence_snippet)}"</div>` : ''}
+    ${citations.length ? `<div class="citations-row"><span class="citations-label">📎 Sources:</span>${citations.map(c => `<span class="citation-tag">${escHtml(c)}</span>`).join('')}</div>` : ''}
+    <div class="qa-actions">
+      <button class="btn btn-ghost btn-sm" onclick="startEdit(${item.id})">✏️ Edit</button>
+      ${item.is_edited ? `<span class="edited-badge">✎ edited</span>` : ''}
+    </div>
+  </div>`;
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function startEdit(id) {
+  const textEl = document.getElementById('answer-text-' + id);
+  if (!textEl) return;
+  const current = textEl.textContent;
+  const textarea = document.createElement('textarea');
+  textarea.className = 'qa-answer-edit';
+  textarea.value = current;
+  textarea.id = 'edit-ta-' + id;
+  textEl.replaceWith(textarea);
+
+  // Replace edit button with save/cancel
+  const actionsEl = document.querySelector(`#qa-item-${id} .qa-actions`);
+  actionsEl.innerHTML = `
+    <button class="btn btn-sm" style="background:var(--accent);color:white" onclick="saveEdit(${id})">💾 Save</button>
+    <button class="btn btn-ghost btn-sm" onclick="cancelEdit(${id}, \`${escHtml(current)}\`)">Cancel</button>
+  `;
+}
+
+async function saveEdit(id) {
+  const ta = document.getElementById('edit-ta-' + id);
+  const newAnswer = ta.value.trim();
+  try {
+    await api(`/runs/${currentRunId}/items/${id}`, { method: 'PATCH', body: JSON.stringify({ answer: newAnswer }) });
+    toast('Answer saved', 'success');
+    openRun(currentRunId); // Refresh
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+function cancelEdit(id, original) {
+  openRun(currentRunId);
+}
+
+// ─── Selection / Partial Regen ───
+function toggleSelect(id, checked) {
+  if (checked) selectedItems.add(id);
+  else selectedItems.delete(id);
+  updateRegenBar();
+}
+
+function updateRegenBar() {
+  const bar = document.getElementById('regen-bar');
+  const count = document.getElementById('regen-count');
+  if (selectedItems.size > 0) {
+    bar.classList.add('show');
+    count.textContent = selectedItems.size;
+  } else {
+    bar.classList.remove('show');
+  }
+}
+
+function clearSelection() {
+  selectedItems = new Set();
+  document.querySelectorAll('.select-checkbox').forEach(c => c.checked = false);
+  updateRegenBar();
+}
+
+async function regenSelected() {
+  if (!selectedItems.size) return;
+  const btn = document.querySelector('#regen-bar button');
+  btn.innerHTML = '<span class="spinner"></span> Regenerating…';
+  btn.disabled = true;
+  try {
+    const res = await api(`/runs/${currentRunId}/regenerate`, {
+      method: 'POST',
+      body: JSON.stringify({ qa_item_ids: Array.from(selectedItems) })
+    });
+    toast(`Regenerated ${res.regenerated} answers`, 'success');
+    clearSelection();
+    openRun(currentRunId);
+  } catch(e) {
+    toast(e.message, 'error');
+    btn.innerHTML = '🔄 Regenerate Selected';
+    btn.disabled = false;
+  }
+}
+
+// ─── New Run / Upload Questionnaire ───
+let pendingRunId = null;
+
+async function uploadQuestionnaire(file) {
+  if (!file) return;
+  const fd = new FormData();
+  fd.append('file', file);
+  const card = document.getElementById('q-preview-card');
+  card.style.display = 'none';
+  toast('Parsing questionnaire…', 'info');
+  try {
+    const res = await api('/runs/upload', { method: 'POST', body: fd, headers: {} });
+    pendingRunId = res.run_id;
+    document.getElementById('q-preview-title').textContent = `${res.total_questions} Questions Found in "${res.filename}"`;
+    document.getElementById('q-preview-list').innerHTML = res.questions.map(q =>
+      `<div class="doc-item"><span class="qa-num" style="flex-shrink:0">Q${q.number}</span><div class="doc-name">${escHtml(q.text)}</div></div>`
+    ).join('');
+    card.style.display = '';
+    toast(`Parsed ${res.total_questions} questions`, 'success');
+  } catch(e) { toast(e.message, 'error'); }
+}
+
+async function generateAnswers() {
+  if (!pendingRunId) return;
+  setBtn('gen-btn', '<span class="spinner"></span> Generating answers… (this may take a minute)', true);
+  try {
+    const res = await api(`/runs/${pendingRunId}/generate`, { method: 'POST' });
+    toast(`Done! ${res.answered} answered, ${res.not_found} not found.`, 'success');
+    setBtn('gen-btn', '✨ Generate Answers', false);
+    document.getElementById('q-preview-card').style.display = 'none';
+    document.getElementById('q-file-input').value = '';
+    loadRuns(); loadDashboard();
+    openRun(pendingRunId);
+    pendingRunId = null;
+  } catch(e) {
+    toast(e.message, 'error');
+    setBtn('gen-btn', '✨ Generate Answers', false);
+  }
+}
+
+// ─── Export ───
+async function exportRun() {
+  if (!currentRunId) return;
+  setBtn('export-btn', '<span class="spinner"></span> Exporting…', true);
+  try {
+    const res = await fetch(`${API}/runs/${currentRunId}/export`, {
+      headers: { 'Authorization': `Bearer ${token}` }
+    });
+    if (!res.ok) throw new Error('Export failed');
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `questionnaire_answers.docx`;
+    a.click();
+    URL.revokeObjectURL(url);
+    toast('Downloaded!', 'success');
+  } catch(e) { toast(e.message, 'error'); }
+  setBtn('export-btn', '⬇ Export DOCX', false);
+}
+</script>
+</body>
+</html>

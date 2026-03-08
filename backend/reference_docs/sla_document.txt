@@ -1,0 +1,43 @@
+LEARNLY SERVICE LEVEL AGREEMENT (SLA)
+Document ID: SLA-002 | Version: 1.8 | Last Updated: March 2024
+
+1. SERVICE AVAILABILITY
+Learnly guarantees 99.9% uptime for all core platform services, measured on a monthly basis. This translates to no more than 43.8 minutes of unplanned downtime per month. The 99.9% SLA applies to the Learning Management portal, course delivery, grade book, and student authentication services.
+
+2. SCHEDULED MAINTENANCE
+Planned maintenance windows occur every Sunday between 02:00 AM and 04:00 AM UTC. Customers receive at least 7 days advance notice for scheduled maintenance. Emergency maintenance may be performed with 2 hours notice. Scheduled maintenance is excluded from uptime calculations.
+
+3. INCIDENT RESPONSE TIMES
+- Critical (P1) - Platform down for all users: Response within 15 minutes, resolution target 2 hours
+- High (P2) - Major feature unavailable: Response within 1 hour, resolution target 8 hours
+- Medium (P3) - Minor feature degraded: Response within 4 hours, resolution target 24 hours
+- Low (P4) - Cosmetic/non-critical issues: Response within 1 business day, resolution target 5 business days
+
+4. SUPPORT CHANNELS
+Learnly provides 24/7 support via:
+- Live chat (average response time: under 3 minutes)
+- Email support: support@learnly.io (response within 4 hours)
+- Phone support for Enterprise tier customers: 1-800-LEARNLY
+- Dedicated Customer Success Manager (CSM) for institutions with 5,000+ active users
+
+5. SLA CREDITS
+If monthly uptime falls below 99.9%, customers receive service credits:
+- 99.0% – 99.89%: 10% credit on monthly invoice
+- 95.0% – 98.99%: 25% credit on monthly invoice
+- Below 95.0%: 50% credit on monthly invoice
+Credits are applied automatically to the next billing cycle.
+
+6. DATA BACKUP & RECOVERY
+All course data and student records are backed up every 6 hours. Backups are retained for 90 days. Recovery Point Objective (RPO): maximum 6 hours of data loss. Recovery Time Objective (RTO): platform restoration within 4 hours of disaster declaration. Backups are stored in geographically separate AWS regions (us-east-1 and eu-west-1).
+
+7. PERFORMANCE STANDARDS
+- Page load time: under 2 seconds for 95th percentile of requests
+- Video streaming: adaptive bitrate with minimum 480p quality guarantee
+- API response time: under 500ms for 99th percentile of API calls
+
+8. EXCLUSIONS
+The SLA does not apply to:
+- Force majeure events (natural disasters, government actions)
+- Customer-caused outages or misconfigurations
+- Third-party service failures outside Learnly's control
+- Beta or preview features

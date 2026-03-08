@@ -1,0 +1,81 @@
+LEARNLY PLATFORM FEATURES & INTEGRATIONS
+Document ID: PROD-004 | Version: 4.0 | Last Updated: April 2024
+
+1. CORE PLATFORM FEATURES
+Learnly provides a comprehensive Learning Management System with the following capabilities:
+
+Course Management:
+- Create and manage unlimited courses per institution
+- Support for video lectures, PDFs, SCORM 1.2/2004, and xAPI (Tin Can) content
+- Drag-and-drop course builder with 30+ content block types
+- Branching logic and adaptive learning paths
+- Course duplication and template library
+
+Assessment & Grading:
+- Auto-graded quizzes (MCQ, true/false, matching, fill-in-blank)
+- Essay and file submission assignments with rubric-based grading
+- Timed examinations with anti-cheating lockdown browser integration
+- Grade book with weighted categories and automatic GPA calculation
+- Peer review assessments
+
+Communication:
+- In-course discussion boards with threaded replies
+- Direct messaging between students and instructors
+- Announcement broadcast to course or institution level
+- Video office hours via built-in Learnly Meet (WebRTC)
+
+2. INTEGRATIONS
+Learnly supports the following integrations natively:
+
+Single Sign-On (SSO):
+- SAML 2.0 (works with Okta, Azure AD, Google Workspace, Shibboleth)
+- LTI 1.3 for external tool integrations
+- OAuth 2.0 for third-party app connections
+
+SIS (Student Information System) Integrations:
+- Banner by Ellucian (two-way sync)
+- PeopleSoft Campus Solutions
+- Workday Student
+- Colleague by Ellucian
+- Custom REST API sync available for other SIS platforms
+
+Video Conferencing:
+- Zoom (automatic meeting creation from course calendar)
+- Microsoft Teams
+- Google Meet
+
+Content & Library:
+- Kaltura for video management
+- Google Drive and OneDrive for file attachments
+- Turnitin for plagiarism detection
+- Respondus LockDown Browser for secure testing
+
+3. MOBILE APPLICATION
+Learnly provides native mobile apps for iOS (version 14+) and Android (version 8+). Features include offline content download, push notifications for deadlines and announcements, mobile assignment submission with camera capture, and progress tracking.
+
+4. ACCESSIBILITY
+Learnly platform is WCAG 2.1 AA compliant. Features include:
+- Full keyboard navigation
+- Screen reader support (JAWS, NVDA, VoiceOver)
+- Automated closed captions for uploaded videos (AI-powered, 95%+ accuracy)
+- Adjustable font sizes and high-contrast mode
+- Alt-text requirements for image uploads
+
+5. REPORTING & ANALYTICS
+- Instructor dashboard: enrollment, completion rates, quiz performance
+- Admin dashboard: institution-wide engagement, license utilization
+- Predictive risk flagging: identifies at-risk students based on engagement patterns
+- Export reports to CSV, Excel, or PDF
+- LRS (Learning Record Store) integration for xAPI statements
+
+6. SYSTEM REQUIREMENTS
+- Supported browsers: Chrome 90+, Firefox 88+, Safari 14+, Edge 90+
+- Recommended internet: minimum 5 Mbps for video streaming
+- Storage per institution: unlimited (fair use policy applies above 10TB)
+- Max file upload: 5GB per file; 50GB per course
+
+7. PRICING TIERS
+- Starter: Up to 500 active users, $3/user/month
+- Growth: Up to 5,000 active users, $2.50/user/month, includes CSM
+- Enterprise: Unlimited users, custom pricing, dedicated infrastructure, SLA guarantees
+All tiers include unlimited courses and 99.9% uptime SLA.

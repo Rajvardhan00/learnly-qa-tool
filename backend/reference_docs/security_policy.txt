@@ -1,0 +1,31 @@
+LEARNLY INFORMATION SECURITY POLICY
+Document ID: SEC-001 | Version: 2.3 | Last Updated: January 2024
+
+1. OVERVIEW
+Learnly is a cloud-based Learning Management System (LMS) serving universities and higher education institutions. This document outlines our information security practices, data protection measures, and compliance posture.
+
+2. DATA ENCRYPTION
+All data at rest is encrypted using AES-256 encryption. Data in transit is protected using TLS 1.2 or higher. Encryption keys are managed via AWS Key Management Service (KMS) with automatic rotation every 90 days. Database backups are encrypted using the same AES-256 standard.
+
+3. ACCESS CONTROL
+Learnly employs Role-Based Access Control (RBAC) with four primary roles: Student, Instructor, Admin, and Super Admin. Multi-Factor Authentication (MFA) is mandatory for all Admin and Super Admin accounts. Student and Instructor accounts are strongly recommended to enable MFA. Session tokens expire after 8 hours of inactivity.
+
+4. VULNERABILITY MANAGEMENT
+Learnly conducts quarterly penetration testing performed by certified third-party security firms. Critical vulnerabilities are patched within 24 hours of discovery. High severity vulnerabilities are resolved within 7 business days. All code changes go through automated SAST (Static Application Security Testing) before deployment.
+
+5. INCIDENT RESPONSE
+Learnly maintains a 24/7 Security Operations Center (SOC). In the event of a data breach, affected customers will be notified within 72 hours in compliance with GDPR Article 33. Our incident response team follows the NIST Cybersecurity Framework. Post-incident reports are provided to affected institutions within 30 days.
+
+6. COMPLIANCE CERTIFICATIONS
+Learnly is certified under:
+- SOC 2 Type II (renewed annually)
+- ISO 27001:2022
+- FERPA compliant (Family Educational Rights and Privacy Act)
+- GDPR compliant for EU users
+- COPPA compliant for users under 13
+
+7. EMPLOYEE SECURITY
+All employees undergo background checks before hiring. Security awareness training is conducted quarterly. Access to production systems is limited to the infrastructure team using privileged access workstations (PAWs). Employee access is reviewed and audited every 6 months.
+
+8. THIRD-PARTY RISK
+All third-party vendors handling student data sign a Data Processing Agreement (DPA). Vendor security assessments are conducted annually. Learnly maintains a list of all sub-processors available upon request.

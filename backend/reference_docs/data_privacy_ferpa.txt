@@ -1,0 +1,67 @@
+LEARNLY DATA PRIVACY & FERPA COMPLIANCE GUIDE
+Document ID: PRIV-003 | Version: 3.1 | Last Updated: February 2024
+
+1. DATA GOVERNANCE OVERVIEW
+Learnly acts as a "school official" under FERPA when processing student education records on behalf of educational institutions. Institutions retain ownership of all student data. Learnly processes data only per institution instructions and never sells student data to third parties.
+
+2. TYPES OF DATA COLLECTED
+Student Data:
+- Name, email address, institutional ID
+- Course enrollments and completion records
+- Assignment submissions and grades
+- Login timestamps and platform activity logs
+- Video watch time and engagement metrics
+
+Instructor Data:
+- Name, email, institutional affiliation
+- Course creation and content uploads
+- Grading activity logs
+
+3. DATA RETENTION POLICY
+Active student records are retained for the duration of the institution's contract plus 1 year. Upon contract termination, institutions can request a full data export within 60 days. Data is permanently deleted within 90 days of contract end unless legally required otherwise. Audit logs are retained for 7 years per regulatory requirements.
+
+4. FERPA COMPLIANCE
+Learnly is fully compliant with the Family Educational Rights and Privacy Act (FERPA). Key measures include:
+- Students can request access to their own education records
+- Institutions control all disclosures of student records
+- Learnly does not disclose student PII to unauthorized third parties
+- Annual FERPA training is mandatory for all Learnly staff with data access
+- Data Processing Agreements (DPAs) are signed with all institutions
+
+5. GDPR COMPLIANCE (EU USERS)
+For institutions with EU-based students:
+- Learnly is registered as a Data Processor under GDPR
+- Standard Contractual Clauses (SCCs) are included in all EU contracts
+- Data localization option available: EU student data stored exclusively in eu-west-1 (Ireland)
+- Right to erasure requests are fulfilled within 30 days
+- Data Protection Officer (DPO) contact: dpo@learnly.io
+
+6. DATA ACCESS CONTROLS
+Student data is accessible only to:
+- The student themselves
+- Instructors of courses the student is enrolled in
+- Institution administrators with appropriate role permissions
+- Learnly support staff (only with institution's written consent, logged and audited)
+
+7. STUDENT DATA RIGHTS
+Students have the right to:
+- Access their personal data and education records
+- Request corrections to inaccurate data
+- Data portability (export in CSV or JSON format)
+- Opt-out of non-essential analytics tracking
+- Request deletion upon account closure (subject to institutional policies)
+
+8. SUB-PROCESSORS
+Learnly uses the following sub-processors for student data:
+- AWS (Amazon Web Services): Cloud infrastructure and storage
+- Twilio SendGrid: Transactional email notifications
+- Wistia: Video hosting and streaming
+- Stripe: Payment processing (billing data only, not student academic data)
+All sub-processors are contractually bound to the same data protection standards.
+
+9. SECURITY INCIDENT NOTIFICATION
+In case of a data breach affecting student records, Learnly will:
+- Notify the affected institution within 24 hours of confirmed breach
+- Provide full incident report within 72 hours
+- Assist institutions in notifying affected students per applicable law
+- Cooperate fully with regulatory investigations

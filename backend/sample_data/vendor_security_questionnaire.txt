@@ -1,0 +1,36 @@
+VENDOR SECURITY ASSESSMENT QUESTIONNAIRE
+Institution: Riverside University
+Vendor: Learnly
+Assessment Date: May 2024
+
+Please answer all questions based on your current platform capabilities and policies.
+
+1. What encryption standards does Learnly use for data at rest and data in transit?
+
+2. Does Learnly support Single Sign-On (SSO)? If so, which protocols are supported?
+
+3. What is Learnly's guaranteed uptime SLA, and what credits are offered if it is not met?
+
+4. How does Learnly comply with FERPA regulations when handling student education records?
+
+5. What is the Recovery Time Objective (RTO) and Recovery Point Objective (RPO) in case of a disaster?
+
+6. How frequently does Learnly conduct penetration testing, and how quickly are critical vulnerabilities patched?
+
+7. Does Learnly offer Multi-Factor Authentication (MFA) for user accounts?
+
+8. What student data does Learnly collect, and how long is it retained after contract termination?
+
+9. Is Learnly's platform accessible to users with disabilities? What accessibility standards are met?
+
+10. What integrations does Learnly support with Student Information Systems (SIS)?
+
+11. What is Learnly's process for notifying institutions in the event of a data breach?
+
+12. What support channels are available, and what are the response time commitments?
+
+13. Does Learnly provide native mobile applications, and what platforms are supported?
+
+14. What compliance certifications does Learnly currently hold?
+
+15. Can student data be localized to specific geographic regions for GDPR compliance?

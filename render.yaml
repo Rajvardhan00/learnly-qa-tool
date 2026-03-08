@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: learnly-qa-tool
+    runtime: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: cd backend && python main.py
+    envVars:
+      - key: GROQ_API_KEY
+        sync: false
+      - key: SECRET_KEY
+        generateValue: true
+      - key: DATABASE_URL
+        value: sqlite:////data/learnly.db
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1
