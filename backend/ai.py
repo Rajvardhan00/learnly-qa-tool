@@ -62,7 +62,7 @@ def generate_answer(question: str, retrieved_chunks: list) -> dict:
             ]
         }
 
-        time.sleep(0.5)  # avoid rate limiting
+        time.sleep(3)  # avoid rate limiting
 
         with httpx.Client(timeout=30.0) as client:
             response = client.post(
