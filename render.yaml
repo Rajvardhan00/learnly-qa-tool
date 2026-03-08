@@ -2,6 +2,7 @@ services:
   - type: web
     name: learnly-qa-tool
     runtime: python
+    pythonVersion: "3.11.9"
     buildCommand: pip install -r requirements.txt
     startCommand: cd backend && python main.py
     envVars:
