@@ -10,7 +10,7 @@ markdown<div align="center">
 [![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.111-009688?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 
-**Live at [https://web-production-feecc.up.railway.app/](https://web-production-feecc.up.railway.app/)**
+**Live at [https://web-production-feecc.up.railway.app/](https://learnly-qa-tool.onrender.com/)**
 
 </div>
 
